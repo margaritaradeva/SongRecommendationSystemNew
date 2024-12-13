@@ -4,8 +4,8 @@ import LottieView from 'lottie-react-native';
 
 export default function Home() {
   return (
-    
       <View style={styles.container}>
+        {/* Sound animation taken from lottie files.com */}
         <View style={styles.sound}>
           <LottieView
             source={require('./assets/lottie/sound.json')} 
@@ -14,8 +14,11 @@ export default function Home() {
             style={styles.lottie}
           />
         </View>
+        {/* Title of the app */}
         <Text style={styles.title}>Song Recommendation System</Text>
+        {/* Subtitle */}
         <Text style={styles.subtitle}>Group Alpha</Text>
+        {/* Description of the app */}
         <Text style={styles.description}>
           Welcome to our Song Recommendation Engine. To get started please select "Recommend" tab on the menu below.
           When you go to the Recommendation page you can get song recommendations for a given userID, which you can either select from a 
@@ -23,6 +26,7 @@ export default function Home() {
           select "New" and enter a new username and song IDs. Press the "Register" button to add this new user. To get the recommmendations for that
           user go back to "existing", and select "Enter manually". Then, type out the username you created and press "Get Recommendations".
         </Text>
+        {/* Little man animation taken from lottiefiles.com*/}
         <View style={styles.lottieContainer}>
           <LottieView
             source={require('./assets/lottie/littleMan.json')}
@@ -32,7 +36,6 @@ export default function Home() {
           />
         </View>
       </View>
-  
   );
 }
 
