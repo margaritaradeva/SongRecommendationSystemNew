@@ -3,17 +3,60 @@ import { StyleSheet, View, Text, TextInput, Platform } from 'react-native';
 import { Button } from 'react-native-web';
 
 export default function SongRecommendation() {
-  const [userStatus, setUserStatus] = useState('');  // 'new' for new user, 'existing' for existing user
-  const [selectedUser, setSelectedUser] = useState('');
-  const [newUserName, setNewUserName] = useState('');
+    const [userStatus, setUserStatus] = useState('');
+    const [selectedUser, setSelectedUser] = useState('');
+    const [newUserName, setNewUserName] = useState('');
+    const [songId, setSongId] = useState('');
+    const [playCount, setPlayCount] = useState('');
 
+    const handleAddUser = async () => {
+        try {
+          const response = await fetch('https://task3-applied-ai-2.onrender.com/add_user', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user_id: newUserName,
+              song_ids: [songId], // Assuming songId is managed similarly to newUserName
+            }),
+          });
+          const data = await response.json();
+          if (data.error) {
+            alert(data.error);
+          } else {
+            alert('User added successfully');
+          }
+        } catch (error) {
+          alert('Failed to add user: ' + error.message);
+        }
+      };
+
+      const handleGetRecommendations = async () => {
+        try {
+          const hardcodedUserId = "b80344d063b5ccb3212f76538f3d9e43d87dca9e";
+          const url = `https://task3-applied-ai-2.onrender.com/recommendations?user_id=${encodeURIComponent(hardcodedUserId)}&n=10`;
+          const response = await fetch(url);
+          const data = await response.json();
+          if (data.error) {
+            alert(data.error);
+          } else {
+            alert('Recommendations fetched successfully');
+            console.log(data); // Here you can further process or display the fetched data
+          }
+        } catch (error) {
+          alert('Failed to fetch recommendations: ' + error.message);
+          console.error('Fetch error:', error);
+        }
+      };
+      
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Are you a new or existing user?</Text>
         <View style={styles.radioContainer}>
           <label style={styles.radioLabel}>
-            <input
+          <input
               type="radio"
               value="existing"
               checked={userStatus === 'existing'}
@@ -41,44 +84,18 @@ export default function SongRecommendation() {
               style={styles.select}
             >
               <option value="">Please select...</option>
-              <option value="user1">User 1</option>
+              <option value="b80344d063b5ccb3212f76538f3d9e43d87dca9e">"b80344d063b5ccb3212f76538f3d9e43d87dca9e"</option>
               <option value="user2">User 2</option>
               <option value="user3">User 3</option>
             </select>
-            <Button title="Get Recommendations" onPress={() => alert('Recommendations fetched!')} />
+            <Button title="Get Recommendations" onPress={handleGetRecommendations} />
           </View>
         )}
 
         {userStatus === 'new' && (
           <View style={styles.textInputWrapper}>
             <Text style={styles.label}>Enter your username:</Text>
-            <TextInput
-              value={newUserName}
-              onChangeText={setNewUserName}
-              style={styles.textInput}
-              placeholder="Username"
-            />
-            <View style={styles.selectWrapper}>
-            <Text style={styles.label}>Select a song you want to add to your playlist:</Text>
-            <select
-              value={selectedUser}
-              onChange={(e) => setSelectedUser(e.target.value)}
-              style={styles.select}
-            >
-              <option value="">Song</option>
-              <option value="user1">User 1</option>
-              <option value="user2">User 2</option>
-              <option value="user3">User 3</option>
-            </select>
-          </View>
-          <Text style={styles.label}>Enter how many times you listened to this song:</Text>
-            <TextInput
-              value={newUserName}
-              onChangeText={setNewUserName}
-              style={styles.textInput}
-              placeholder="Number of listens"
-            />
-            <Button title="Add Song" onPress={() => alert('Song added!')} />
+         
           </View>
         )}
       </View>
