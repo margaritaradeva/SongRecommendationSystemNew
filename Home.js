@@ -19,7 +19,7 @@ export default function Home() {
         Welcome to our Song Recommendation Engine. To get started please select "Recommend" on the menu below.
         When you go to  the recommendation page you can get song recommendations for a given userID which you can either select from a 
         dropdown menu or enter manually. To get the recommendations, press the "GET RECOMMENDATIONS" button. If you wish to add a new user,
-        select "New" and enter a new username and song IDs. Press the "REGISTER" button to add a new user. To get the recommendatioins for that
+        select "New" and enter a new username and song IDs. Press the "REGISTER" button to add a new user. To get the recommmendations for that
         user go back to "existing", type out the username and press "GET RECOMMENDATIONS".
       </Text>
       <View style={styles.lottieContainer}>

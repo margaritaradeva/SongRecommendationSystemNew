@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Platform, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Platform, TouchableOpacity, ScrollView } from 'react-native';
 import userData from './assets/data.json';
 
 export default function SongRecommendation() {
@@ -18,7 +18,7 @@ export default function SongRecommendation() {
             alert('Please enter a username and provide at least one song ID.');
             return;
         }
-        const songIds = songIdsInput.split(',').map(id => id.trim());  // Assuming IDs are separated by commas
+        const songIds = songIdsInput.split(',').map(id => id.trim());
 
         try {
             const response = await fetch('https://task3-applied-ai-2.onrender.com/add_user', {
@@ -43,103 +43,121 @@ export default function SongRecommendation() {
             return;
         }
         try {
-            const url = `https://task3-applied-ai-2.onrender.com/recommendations?user_id=${encodeURIComponent(userId)}&n=10`;
+            const url = `https://task3-applied-ai-2.onrender.com/recommendations?user_id=${encodeURIComponent(userId)}&n=${numRecommendations}`;
             const response = await fetch(url);
             const data = await response.json();
             if (data.error) {
                 alert(data.error);
             } else {
-                
-                    setRecommendations(data); // Store the fetched data in state
-                    console.log('Recommendations fetched successfully');
-                    console.log(data);
+                setRecommendations(data);
+                console.log('Recommendations fetched successfully');
+                console.log(data);
             }
         } catch (error) {
             alert(`Failed to fetch recommendations: ${error.message}`);
         }
     };
 
-
     return (
-        <View style={styles.container}>
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Are you a new or existing user?</Text>
-                <View style={styles.radioContainer}>
-                    <label style={styles.radioLabel}>
-                        <input type="radio" value="existing" checked={userStatus === 'existing'} onChange={() => setUserStatus('existing')} />
-                        Existing
-                    </label>
-                    <label style={styles.radioLabel}>
-                        <input type="radio" value="new" checked={userStatus === 'new'} onChange={() => setUserStatus('new')} />
-                        New
-                    </label>
-                </View>
-
-                {userStatus === 'new' && (
-                    <View style={styles.textInputWrapper}>
-                        <Text style={styles.label}>Enter your username:</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            onChangeText={setNewUserName}
-                            value={newUserName}
-                            placeholder="Username"
-                        />
-                        <Text style={styles.label}>Enter Song IDs (comma separated):</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            onChangeText={setSongIdsInput}
-                            value={songIdsInput}
-                            placeholder="e.g., SOLXVQY12A6D4F477A, SOAYCLH12A81C22D59"
-                            multiline
-                        />
-                        <Button title="Register" onPress={handleAddUser} />
-                        
-                    </View>
-                )}
-
-{userStatus === 'existing' && (
-                <>
-                    <Text style={styles.label}>How would you like to enter the user ID?</Text>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <View style={styles.container}>
+                <Text style={styles.title}>Song Recommendation System</Text>
+                <Text style={styles.subtitle}>Group Alpha</Text>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Are you a new or existing user?</Text>
                     <View style={styles.radioContainer}>
                         <label style={styles.radioLabel}>
-                            <input type="radio" value="select" checked={inputMethod === 'select'} onChange={() => setInputMethod('select')} />
-                            Select from list
+                            <input type="radio" value="existing" checked={userStatus === 'existing'} onChange={() => setUserStatus('existing')} />
+                            Existing
                         </label>
                         <label style={styles.radioLabel}>
-                            <input type="radio" value="manual" checked={inputMethod === 'manual'} onChange={() => setInputMethod('manual')} />
-                            Enter manually
+                            <input type="radio" value="new" checked={userStatus === 'new'} onChange={() => setUserStatus('new')} />
+                            New
                         </label>
                     </View>
-                    {inputMethod === 'select' ? (
-                        <select value={selectedUser} onChange={e => setSelectedUser(e.target.value)} style={styles.select}>
-                            <option value="">Please select...</option>
-                            {users.map(user => <option key={user} value={user}>{user}</option>)}
-                        </select>
-                    ) : (
-                        <TextInput
-                            style={styles.textInput}
-                            value={manualUserId}
-                            onChangeText={setManualUserId}
-                            placeholder="Enter User ID"
-                        />
-                    )}
-                            <Button title="Get Recommendations" onPress={handleGetRecommendations} />
-                        
-                        <View style={styles.resultsContainer}>
-                            {recommendations.map((item, index) => (
-                                <Text key={index} style={styles.resultItem}>
-                                    {item.artist} - {item.title}
-                                </Text>
-                            ))}
+
+                    {userStatus === 'new' && (
+                        <View style={styles.textInputWrapper}>
+                            <Text style={styles.label}>Enter your username:</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                onChangeText={setNewUserName}
+                                value={newUserName}
+                                placeholder="Username"
+                            />
+                            <Text style={styles.label}>Enter Song IDs (comma separated):</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                onChangeText={setSongIdsInput}
+                                value={songIdsInput}
+                                placeholder="e.g., SOLXVQY12A6D4F477A, SOAYCLH12A81C22D59"
+                                multiline
+                            />
+                            <TouchableOpacity style={styles.button} onPress={handleAddUser}>
+                                <Text style={styles.buttonText}>Register</Text>
+                            </TouchableOpacity>
                         </View>
-                    </>
-                )}
+                    )}
+
+                    {userStatus === 'existing' && (
+                        <>
+                            <Text style={styles.label}>How would you like to enter the user ID?</Text>
+                            <View style={styles.radioContainer}>
+                                <label style={styles.radioLabel}>
+                                    <input type="radio" value="select" checked={inputMethod === 'select'} onChange={() => setInputMethod('select')} />
+                                    Select from list
+                                </label>
+                                <label style={styles.radioLabel}>
+                                    <input type="radio" value="manual" checked={inputMethod === 'manual'} onChange={() => setInputMethod('manual')} />
+                                    Enter manually
+                                </label>
+                            </View>
+                            {inputMethod === 'select' ? (
+                                <select value={selectedUser} onChange={e => setSelectedUser(e.target.value)} style={styles.select}>
+                                    <option value="">Please select...</option>
+                                    {users.map(user => <option key={user} value={user}>{user}</option>)}
+                                </select>
+                            ) : (
+                                <TextInput
+                                    style={styles.textInput}
+                                    value={manualUserId}
+                                    onChangeText={setManualUserId}
+                                    placeholder="Enter User ID"
+                                />
+                            )}
+                            <Text style={styles.label}>Number of Recommendations:</Text>
+                            <select value={numRecommendations} onChange={(e) => setNumRecommendations(e.target.value)} style={styles.select}>
+                                {[...Array(10).keys()].map(num => (
+                                    <option key={num + 1} value={num + 1}>{num + 1}</option>
+                                ))}
+                            </select>
+                            <TouchableOpacity style={styles.button} onPress={handleGetRecommendations}>
+                                <Text style={styles.buttonText}>Get Recommendations</Text>
+                            </TouchableOpacity>
+                            <View style={styles.resultsContainer}>
+                                {recommendations.map((item, index) => (
+                                    <View key={index} style={styles.resultItem}>
+                                        <Text>Artist: {item.artist}</Text>
+                                        <Text>Song: {item.title}</Text>
+                                        <Text>Score: {item.score.toFixed(3)}</Text>
+                                        <Text>==========================</Text>
+                                    </View>
+                                ))}
+                            </View>
+                        </>
+                    )}
+                </View>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
+    scrollContainer: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -159,6 +177,21 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderRadius: 5,
         backgroundColor: '#9effd8',
+    },
+    title: {
+        fontSize: Platform.OS === 'web' ? 34 : 24,
+        fontWeight: 'bold',
+        marginBottom: 8,
+        marginTop: 20,
+        textAlign: 'center',
+    },
+    subtitle: {
+        fontSize: 28,
+        fontStyle: 'italic',
+        marginBottom: 16,
+        textAlign: 'center',
+        color: '#333',
+        width: '100%',
     },
     label: {
         marginBottom: 8,
@@ -198,6 +231,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ddd',
         borderRadius: 4,
+    },
+    button: {
+        backgroundColor: '#26cebd',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     resultsContainer: {
         marginTop: 20,
