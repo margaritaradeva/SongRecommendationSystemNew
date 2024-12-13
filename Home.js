@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     fontSize: Platform.OS === 'web' ? 54 : 24,
     fontWeight: 'bold',
     marginBottom: 8,
+    marginTop: 20,
     textAlign: 'center',
   },
   subtitle: {
@@ -68,16 +69,18 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   lottieContainer: {
-    width: 600, // Set width of the container
-    height: 600, // Set height of the container
+    width: 400, // Set width of the container
+    height: 400, // Set height of the container
     justifyContent: 'center', // Center the LottieView vertically
     alignItems: 'center', // Center the LottieView horizontally
+    marginBottom: '10%',
   },
   lottie: {
     width: 150, // Set the width of the LottieView
     height: 150, // Set the height of the LottieView
   },
   sound: {
+    marginTop: '10%',
     width: 150,
     height: 150,
   },
