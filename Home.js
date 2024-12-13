@@ -16,8 +16,11 @@ export default function Home() {
       <Text style={styles.title}>Song Recommendation System</Text>
       <Text style={styles.subtitle}>Group Alpha</Text>
       <Text style={styles.description}>
-        Welcome to our Song Recommendation Engine. This tool recommends songs based on your
-        listening preferences, helping you discover music that resonates with your taste.
+        Welcome to our Song Recommendation Engine. To get started please select "Recommend" on the menu below.
+        When you go to  the recommendation page you can get song recommendations for a given userID which you can either select from a 
+        dropdown menu or enter manually. To get the recommendations, press the "GET RECOMMENDATIONS" button. If you wish to add a new user,
+        select "New" and enter a new username and song IDs. Press the "REGISTER" button to add the user. To get the recommendatioins for that
+        user go back to "existing", type out the username and press "GET RECOMMENDATIONS".
       </Text>
       <View style={styles.lottieContainer}>
         <LottieView
@@ -69,8 +72,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   lottieContainer: {
-    width: 300, // Set width of the container
-    height: 300, // Set height of the container
+    width: 150, // Set width of the container
+    height: 150, // Set height of the container
     justifyContent: 'center', // Center the LottieView vertically
     alignItems: 'center', // Center the LottieView horizontally
     marginBottom: '25%',
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
   },
   sound: {
     marginTop: '25%',
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
   },
 });

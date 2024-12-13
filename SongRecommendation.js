@@ -10,7 +10,8 @@ export default function SongRecommendation() {
     const [numRecommendations, setNumRecommendations] = useState(10);
     const [recommendations, setRecommendations] = useState([]);
     const [users, setUsers] = useState(userData.unique_users || []);
-
+    const [manualUserId, setManualUserId] = useState('');
+    const [inputMethod, setInputMethod] = useState('select');
 
     const handleAddUser = async () => {
         if (!newUserName || !songIdsInput) {
@@ -36,25 +37,28 @@ export default function SongRecommendation() {
     };
 
     const handleGetRecommendations = async () => {
-        if (!selectedUser) {
-            alert('Please select a user first.');
+        const userId = inputMethod === 'select' ? selectedUser : manualUserId;
+        if (!userId) {
+            alert('Please select or enter a user ID.');
             return;
         }
         try {
-            const url = `https://task3-applied-ai-2.onrender.com/recommendations?user_id=${encodeURIComponent(selectedUser)}&n=${numRecommendations}`;
+            const url = `https://task3-applied-ai-2.onrender.com/recommendations?user_id=${encodeURIComponent(userId)}&n=10`;
             const response = await fetch(url);
             const data = await response.json();
             if (data.error) {
                 alert(data.error);
             } else {
-                setRecommendations(data);
-                console.log('Recommendations fetched successfully', data);
+                
+                    setRecommendations(data); // Store the fetched data in state
+                    console.log('Recommendations fetched successfully');
+                    console.log(data);
             }
         } catch (error) {
             alert(`Failed to fetch recommendations: ${error.message}`);
-            console.error('Fetch error:', error);
         }
     };
+
 
     return (
         <View style={styles.container}>
@@ -89,25 +93,38 @@ export default function SongRecommendation() {
                             multiline
                         />
                         <Button title="Register" onPress={handleAddUser} />
+                        
                     </View>
                 )}
 
-                {userStatus === 'existing' && (
-                    <>
-                        <View style={styles.selectWrapper}>
-                            <Text style={styles.label}>Select User:</Text>
-                            <select value={selectedUser} onChange={e => setSelectedUser(e.target.value)} style={styles.select}>
-                                <option value="">Please select...</option>
-                               {users.map((user) => (
-                                    <option key={user} value={user}>{user}</option>
-                                ))}
-                            </select>
-                            <Text style={styles.label}>Number of Recommendations:</Text>
-                            <select value={numRecommendations} onChange={e => setNumRecommendations(e.target.value)} style={styles.select}>
-                                {[...Array(10).keys()].map(num => <option key={num + 1} value={num + 1}>{num + 1}</option>)}
-                            </select>
+{userStatus === 'existing' && (
+                <>
+                    <Text style={styles.label}>How would you like to enter the user ID?</Text>
+                    <View style={styles.radioContainer}>
+                        <label style={styles.radioLabel}>
+                            <input type="radio" value="select" checked={inputMethod === 'select'} onChange={() => setInputMethod('select')} />
+                            Select from list
+                        </label>
+                        <label style={styles.radioLabel}>
+                            <input type="radio" value="manual" checked={inputMethod === 'manual'} onChange={() => setInputMethod('manual')} />
+                            Enter manually
+                        </label>
+                    </View>
+                    {inputMethod === 'select' ? (
+                        <select value={selectedUser} onChange={e => setSelectedUser(e.target.value)} style={styles.select}>
+                            <option value="">Please select...</option>
+                            {users.map(user => <option key={user} value={user}>{user}</option>)}
+                        </select>
+                    ) : (
+                        <TextInput
+                            style={styles.textInput}
+                            value={manualUserId}
+                            onChangeText={setManualUserId}
+                            placeholder="Enter User ID"
+                        />
+                    )}
                             <Button title="Get Recommendations" onPress={handleGetRecommendations} />
-                        </View>
+                        
                         <View style={styles.resultsContainer}>
                             {recommendations.map((item, index) => (
                                 <Text key={index} style={styles.resultItem}>
