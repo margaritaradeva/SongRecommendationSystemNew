@@ -1,40 +1,47 @@
 import React from 'react';
-import { StyleSheet, Platform, Text, View } from 'react-native';
+import { StyleSheet, Platform, Text, View, ScrollView } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 export default function Home() {
   return (
-    <View style={styles.container}>
-      <View style={styles.sound}>
-        <LottieView
-          source={require('./assets/lottie/sound.json')} // Ensure the path is correct
-          autoPlay
-          loop
-          style={styles.lottie}
-        />
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <View style={styles.sound}>
+          <LottieView
+            source={require('./assets/lottie/sound.json')} 
+            autoPlay
+            loop
+            style={styles.lottie}
+          />
+        </View>
+        <Text style={styles.title}>Song Recommendation System</Text>
+        <Text style={styles.subtitle}>Group Alpha</Text>
+        <Text style={styles.description}>
+          Welcome to our Song Recommendation Engine. To get started please select "Recommend" tab on the menu below.
+          When you go to the Recommendation page you can get song recommendations for a given userID, which you can either select from a 
+          dropdown menu or enter manually. Additionally, you can select how many recommendations to be displayed. To get the recommendations, press the "Get Recommendations" button. If you wish to add a new user,
+          select "New" and enter a new username and song IDs. Press the "Register" button to add this new user. To get the recommmendations for that
+          user go back to "existing", and select "Enter manually". Then, type out the username you created and press "Get Recommendations".
+        </Text>
+        <View style={styles.lottieContainer}>
+          <LottieView
+            source={require('./assets/lottie/littleMan.json')}
+            autoPlay
+            loop
+            style={styles.lottie}
+          />
+        </View>
       </View>
-      <Text style={styles.title}>Song Recommendation System</Text>
-      <Text style={styles.subtitle}>Group Alpha</Text>
-      <Text style={styles.description}>
-        Welcome to our Song Recommendation Engine. To get started please select "Recommend" on the menu below.
-        When you go to  the recommendation page you can get song recommendations for a given userID which you can either select from a 
-        dropdown menu or enter manually. To get the recommendations, press the "GET RECOMMENDATIONS" button. If you wish to add a new user,
-        select "New" and enter a new username and song IDs. Press the "REGISTER" button to add a new user. To get the recommmendations for that
-        user go back to "existing", type out the username and press "GET RECOMMENDATIONS".
-      </Text>
-      <View style={styles.lottieContainer}>
-        <LottieView
-          source={require('./assets/lottie/littleMan.json')} // Ensure the path is correct
-          autoPlay
-          loop
-          style={styles.lottie}
-        />
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -72,15 +79,15 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   lottieContainer: {
-    width: 150, // Set width of the container
-    height: 150, // Set height of the container
-    justifyContent: 'center', // Center the LottieView vertically
-    alignItems: 'center', // Center the LottieView horizontally
+    width: 150, 
+    height: 150, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
     marginBottom: '25%',
   },
   lottie: {
-    width: 150, // Set the width of the LottieView
-    height: 150, // Set the height of the LottieView
+    width: 150, 
+    height: 150, 
   },
   sound: {
     marginTop: '25%',
