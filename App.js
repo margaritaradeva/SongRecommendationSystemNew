@@ -5,8 +5,40 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Home from './Home';
 import SongRecommendation from './SongRecommendation';
 import { Platform } from 'react-native';
+
+
 const Tab = createBottomTabNavigator();
 
+/**
+ * Main application component that sets up the navigation container and tab navigator. I used https://github.com/margaritaradeva/DissertationReactCLI - my dissertation implementation as a reference.
+ * 
+ * @returns {JSX.Element} The main application component.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <App />
+ * )
+ * 
+ * @description
+ * This component uses a Tab Navigator to switch between the "Home" and "Recommend" screens.
+ * It also customizes the tab bar with icons and styles.
+ * 
+ * @property {Object} screenOptions - Options for configuring the tab navigator.
+ * @property {Function} screenOptions.tabBarIcon - Function to render the icon for each tab.
+ * @property {Object} screenOptions.tabBarStyle - Styles for the tab bar.
+ * @property {boolean} screenOptions.headerShown - Whether to show the header.
+ * 
+ * @param {Object} route - The route object provided by React Navigation.
+ * @param {boolean} focused - Whether the tab is focused.
+ * @param {string} color - The color of the tab icon.
+ * @param {number} size - The size of the tab icon.
+ * 
+ * @returns {JSX.Element} The tab icon component.
+ * 
+ * 
+ * The easiest way to see changes on this bottom tabs menu is to change the name of the icon in the iconName variable or change the color of the icon in the tabBarActiveTintColor and tabBarInactiveTintColor properties.
+ */
 export default function App() {
   return (
     <NavigationContainer>
