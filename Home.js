@@ -4,7 +4,7 @@ import LottieView from 'lottie-react-native';
 
 export default function Home() {
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
+    
       <View style={styles.container}>
         <View style={styles.sound}>
           <LottieView
@@ -32,7 +32,7 @@ export default function Home() {
           />
         </View>
       </View>
-    </ScrollView>
+  
   );
 }
 
