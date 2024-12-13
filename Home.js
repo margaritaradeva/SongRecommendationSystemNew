@@ -73,14 +73,14 @@ const styles = StyleSheet.create({
     height: 300, // Set height of the container
     justifyContent: 'center', // Center the LottieView vertically
     alignItems: 'center', // Center the LottieView horizontally
-    marginBottom: '20%',
+    marginBottom: '25%',
   },
   lottie: {
     width: 150, // Set the width of the LottieView
     height: 150, // Set the height of the LottieView
   },
   sound: {
-    marginTop: '20%',
+    marginTop: '25%',
     width: 150,
     height: 150,
   },
