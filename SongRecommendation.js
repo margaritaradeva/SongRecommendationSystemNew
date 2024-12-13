@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TextInput, Platform, TouchableOpacity, ScrollVi
 import userData from './assets/data.json';
 
 export default function SongRecommendation() {
+    // State variables
     const [userStatus, setUserStatus] = useState('');
     const [selectedUser, setSelectedUser] = useState('');
     const [newUserName, setNewUserName] = useState('');
@@ -13,6 +14,8 @@ export default function SongRecommendation() {
     const [manualUserId, setManualUserId] = useState('');
     const [inputMethod, setInputMethod] = useState('select');
 
+    // Function to handle adding a new user from the flask API backend
+    // including some error handling
     const handleAddUser = async () => {
         if (!newUserName || !songIdsInput) {
             alert('Please enter a username and provide at least one song ID.');
@@ -36,6 +39,8 @@ export default function SongRecommendation() {
         }
     };
 
+    // Function to handle fetching song recommendations from the flask API backend
+    // including some error handling
     const handleGetRecommendations = async () => {
         const userId = inputMethod === 'select' ? selectedUser : manualUserId;
         if (!userId) {
@@ -66,6 +71,7 @@ export default function SongRecommendation() {
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Are you a new or existing user?</Text>
                     <View style={styles.radioContainer}>
+                        {/* Radio buttons for selecting user status */}
                         <label style={styles.radioLabel}>
                             <input type="radio" value="existing" checked={userStatus === 'existing'} onChange={() => setUserStatus('existing')} />
                             Existing
@@ -76,6 +82,7 @@ export default function SongRecommendation() {
                         </label>
                     </View>
 
+                    {/* Form for new users */}
                     {userStatus === 'new' && (
                         <View style={styles.textInputWrapper}>
                             <Text style={styles.label}>Enter your username:</Text>
@@ -99,10 +106,12 @@ export default function SongRecommendation() {
                         </View>
                     )}
 
+                    {/* Form for existing users */}
                     {userStatus === 'existing' && (
                         <>
                             <Text style={styles.label}>How would you like to enter the user ID?</Text>
                             <View style={styles.radioContainer}>
+                                {/* Radio buttons for selecting input method */}
                                 <label style={styles.radioLabel}>
                                     <input type="radio" value="select" checked={inputMethod === 'select'} onChange={() => setInputMethod('select')} />
                                     Select from list
@@ -112,12 +121,14 @@ export default function SongRecommendation() {
                                     Enter manually
                                 </label>
                             </View>
+                            {/* Dropdown for selecting user from list */}
                             {inputMethod === 'select' ? (
                                 <select value={selectedUser} onChange={e => setSelectedUser(e.target.value)} style={styles.select}>
                                     <option value="">Please select...</option>
                                     {users.map(user => <option key={user} value={user}>{user}</option>)}
                                 </select>
                             ) : (
+                                // Text input for manual user ID entry
                                 <TextInput
                                     style={styles.textInput}
                                     value={manualUserId}
@@ -126,16 +137,20 @@ export default function SongRecommendation() {
                                 />
                             )}
                             <Text style={styles.label}>Number of Recommendations:</Text>
+                            {/* Dropdown for selecting number of recommendations */}
                             <select value={numRecommendations} onChange={(e) => setNumRecommendations(e.target.value)} style={styles.select}>
                                 {[...Array(10).keys()].map(num => (
                                     <option key={num + 1} value={num + 1}>{num + 1}</option>
                                 ))}
                             </select>
+                            {/* Button to get recommendations from backend*/}
                             <TouchableOpacity style={styles.button} onPress={handleGetRecommendations}>
                                 <Text style={styles.buttonText}>Get Recommendations</Text>
                             </TouchableOpacity>
                             <View style={styles.resultsContainer}>
+                                {/* Displaying recommendations */}
                                 {recommendations.map((item, index) => (
+                                    // Displaying each recommendation's artist, song, and score
                                     <View key={index} style={styles.resultItem}>
                                         <Text>Artist: {item.artist}</Text>
                                         <Text>Song: {item.title}</Text>
