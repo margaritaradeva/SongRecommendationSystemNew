@@ -23,19 +23,19 @@ export default function App() {
             // You can return any component that you like here!
             return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: 'yellowgreen',
-          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: 'blue',
+          tabBarInactiveTintColor: 'brown',
           tabBarStyle: {
             ...Platform.select({
               web: {
-                backgroundImage: 'linear-gradient(to right,#a5a0fc,#7ae3f8,#00d4ff)',
+                backgroundImage: 'linear-gradient(to right, #a5a0fc, #c47ee2, #37aafc, #92d4ef, #00d4ff)',
                 color: 'white',
                 height: 60,
+                borderTopWidth: 4,    // Set the border width
+                borderTopColor: '#efbdff', // Set the border color
+                borderStyle: 'solid'  // Set the border style
               },
-              default: {
-                backgroundColor: 'green',
-                height: 60,
-              },
+      
             })
           },
           
